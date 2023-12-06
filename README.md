@@ -90,3 +90,40 @@ highest_avg_sales_chain = low_franchise_chains.loc[low_franchise_chains['Sales p
 # Display the chain with the highest average sales per unit and low franchised stores
 print("Chain with the highest average sales per unit and low franchised stores:")
 print(highest_avg_sales_chain[['Fast-Food Chains', 'Average Sales per Unit (Thousands - U.S Dollars)', 'Franchised Stores']])
+
+# Calculate the total number of fast-food franchises in the U.S.
+total_franchises = fastfood_table['Franchised Stores'].sum()
+print("Total number of fast-food franchises open in the U.S.: ", total_franchises)
+
+# Find the fast-food chain with the most growth from 2020 to 2021
+most_growth_chain = fastfood_df.loc[fastfood_df['Total Change in Units from 2020'].idxmax()]
+print("Fast-food chain with the most growth from 2020 to 2021:")
+print(most_growth_chain[['Fast-Food Chains', 'Total Change in Units from 2020']])
+
+# Calculate growth rate
+fastfood_df['Growth Rate'] = (fastfood_df['U.S. Systemwide Sales (Millions - U.S Dollars)'] / (fastfood_df['Total Change in Units from 2020'] + 1)) - 1
+
+# Get the top 3 performing chains in terms of growth rate
+top_3_growth_chains = fastfood_df.nlargest(3, 'Growth Rate')[['Fast-Food Chains', 'Growth Rate']]
+
+print("Top 3 performing chains in terms of U.S. Systemwide Sales Growth Rate from 2020 to 2021:")
+print(top_3_growth_chains)
+
+# Calculate the total number of fast-food franchises in the U.S.
+total_franchises = fastfood_table['Franchised Stores'].sum()
+print("Total number of fast-food franchises open in the U.S.: ", total_franchises)
+
+# Find the fast-food chain with the most growth from 2020 to 2021
+most_growth_chain = fastfood_df.loc[fastfood_df['Total Change in Units from 2020'].idxmax()]
+print("Fast-food chain with the most growth from 2020 to 2021:")
+print(most_growth_chain[['Fast-Food Chains', 'Total Change in Units from 2020']])
+
+# Calculate growth rate
+fastfood_df['Growth Rate'] = (fastfood_df['U.S. Systemwide Sales (Millions - U.S Dollars)'] / (fastfood_df['Total Change in Units from 2020'] + 1)) - 1
+
+# Get the top 3 performing chains in terms of growth rate
+top_3_growth_chains = fastfood_df.nlargest(3, 'Growth Rate')[['Fast-Food Chains', 'Growth Rate']]
+
+print("Top 3 performing chains in terms of U.S. Systemwide Sales Growth Rate from 2020 to 2021:")
+print(top_3_growth_chains)
+
