@@ -25,30 +25,68 @@ The dataset encompasses the following key attributes for each fast-food chain:
 
 7. **Total Change in Units from 2020:** The net change in the number of units (stores) from the year 2020.
 
-## Data Sources
+# Fast-Food Chains Dataset
 
-The dataset is compiled from reliable sources, including industry reports, financial statements, and official company publications. Regular updates are made to ensure accuracy and relevance.
+## Overview
 
-## Potential Uses
+This dataset provides comprehensive information on various fast-food chains in the United States, focusing on key financial and operational metrics. It includes data on U.S. systemwide sales, average sales per unit, the number of franchised and company-owned stores, 2021 total units, and the total change in units from 2020. This dataset is valuable for researchers, analysts, and enthusiasts looking to understand the financial and operational dynamics of fast-food chains in the USA.
 
-- **Financial Analysis:** Analyze the financial performance of fast-food chains based on systemwide sales and average sales per unit.
+## Data Loading and Exploration
 
-- **Operational Insights:** Explore the distribution of franchised and company-owned stores to understand the operational structure.
+To work with the dataset, you can use the `datascience` library to create a Table and then convert it into a Pandas DataFrame for more extensive analysis:
 
-- **Market Trends:** Examine the total number of units and changes over time to identify market trends and growth patterns.
+```python
+# Load dataset into a datascience Table
+fastfood_table = Table.read_table('Fastfood_USA.csv')
 
-## Dataset Format
+# Convert the Table to a Pandas DataFrame
+fastfood_df = fastfood_table.to_df()
 
-The dataset is provided in a CSV (Comma-Separated Values) format for easy integration with various data analysis tools and programming languages.
+# Check for missing values using isnull() in Pandas DataFrame
+missing_values = fastfood_df.isnull().sum()
+print(missing_values)
+# Find the fast-food chain with the highest systemwide sales in 2021
+highest_sales_chain = fastfood_df.loc[fastfood_df['U.S. Systemwide Sales (Millions - U.S Dollars)'].idxmax()]
 
-## License
+# Display the fast-food chain with the highest systemwide sales in 2021
+print("Fast-Food Chain with the Highest Systemwide Sales in 2021:")
+print(highest_sales_chain[['Fast-Food Chains', 'U.S. Systemwide Sales (Millions - U.S Dollars)']])
 
-This dataset is made available under the [Open Database License](https://opendatacommons.org/licenses/odbl/1.0/). Users are free to share, modify, and use the dataset for any purpose, provided they attribute the source.
+# Sort by U.S. Systemwide Sales to identify chains with the least sales
+bottom_sales_chains = fastfood_table.sort('U.S. Systemwide Sales (Millions - U.S Dollars)').take[:10]
 
-## Acknowledgments
+print("Chains with the least U.S. Systemwide Sales:")
+print(bottom_sales_chains.select(['Fast-Food Chains', 'U.S. Systemwide Sales (Millions - U.S Dollars)']))
 
-We acknowledge the various data sources that contributed to the compilation of this dataset. Their efforts enable a deeper understanding of the financial and operational landscape of fast-food chains in the United States.
+# Sort by U.S. Systemwide Sales to identify the top-performing chains
+top_sales_chains = fastfood_table.sort('U.S. Systemwide Sales (Millions - U.S Dollars)', descending=True).take[:10]
 
----
+print("Top-performing chains based on U.S. Systemwide Sales:")
+print(top_sales_chains)
 
-Feel free to customize this readme further according to your specific dataset and project details.
+# Sort by Average Sales per Unit to identify top-performing chains
+top_avg_sales_chains = fastfood_table.sort('Average Sales per Unit (Thousands - U.S Dollars)', descending=True).take[:10]
+
+print("\nTop-performing chains based on Average Sales per Unit:")
+print(top_avg_sales_chains)
+
+# Calculate correlation between U.S. Systemwide Sales and Average Sales per Unit
+sales_correlation = fastfood_df['U.S. Systemwide Sales (Millions - U.S Dollars)'].corr(
+    fastfood_df['Average Sales per Unit (Thousands - U.S Dollars)']
+)
+
+print("Correlation between U.S. Systemwide Sales and Average Sales per Unit:", sales_correlation)
+
+# Filter for chains with a low number of franchised stores (e.g., less than 50)
+low_franchise_threshold = 50
+low_franchise_chains = fastfood_df[fastfood_df['Franchised Stores'] < low_franchise_threshold]
+
+# Calculate average sales per unit for these chains
+low_franchise_chains['Sales per Unit'] = low_franchise_chains['U.S. Systemwide Sales (Millions - U.S Dollars)'] / low_franchise_chains['2021 Total Units']
+
+# Find the chain with the highest average sales per unit among these low franchised stores chains
+highest_avg_sales_chain = low_franchise_chains.loc[low_franchise_chains['Sales per Unit'].idxmax()]
+
+# Display the chain with the highest average sales per unit and low franchised stores
+print("Chain with the highest average sales per unit and low franchised stores:")
+print(highest_avg_sales_chain[['Fast-Food Chains', 'Average Sales per Unit (Thousands - U.S Dollars)', 'Franchised Stores']])
