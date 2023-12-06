@@ -1,6 +1,3 @@
-# -Project-2-on-Data-Analysis-with-Python
-Overview
-This dataset provides comprehensive information on the top 50 fast-food chains in the United States. It includes details about each chain's popularity, financial performance, menu offerings, and other relevant metrics. Researchers, analysts, and enthusiasts in the food industry can use this dataset to gain insights into the dynamics of the fast-food landscape in the USA. 
 # Fast-Food Chains Dataset
 
 ## Overview
